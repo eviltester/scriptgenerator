@@ -45,3 +45,14 @@ If you want to use it then amend the @Test method, add the folders, then run the
 
 Oh, and it also outputs a word count and estimated time for each script based on the number of words in the `SAY:` sections. 
 
+---
+
+You can also create a `config.properties` file in the `user.dir` with:
+
+~~~~~~~~
+inputPath = /my/input/path
+outputPath = /my/output/path
+~~~~~~~~
+
+And then you don't need to amend the test, just run it.
+

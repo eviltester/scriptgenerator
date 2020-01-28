@@ -92,6 +92,9 @@ public class ScriptFormatter {
 
         }
 
+        // write the last say and do
+        tableWriter.writeLine(sayThis, doThis);
+
         tableWriter.finish();
         writer.close();
         reader.close();

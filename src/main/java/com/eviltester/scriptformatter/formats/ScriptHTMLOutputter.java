@@ -24,6 +24,8 @@ public class ScriptHTMLOutputter {
         return outputFile.getAbsolutePath();
     }
 
+    //TODO add the script validation into the script object and have a `validate` method
+
     public void output(final DoSayScript script) throws IOException {
 
         if(outputFile.exists()){

@@ -1,10 +1,10 @@
-import com.eviltester.scriptformatter.files.ScriptConfigFile;
-import com.eviltester.scriptformatter.files.ScriptPaths;
+import com.eviltester.scriptformatter.files.*;
+import com.eviltester.scriptformatter.formats.ScriptHTMLOutputter;
 import com.eviltester.scriptformatter.html.ScriptFormatter;
+import com.eviltester.scriptformatter.formats.ScriptTimeEstimator;
 import org.junit.jupiter.api.Test;
 import java.io.*;
 import java.util.Arrays;
-import java.util.Properties;
 
 public class ScriptFormatterTest {
 
@@ -35,7 +35,24 @@ public class ScriptFormatterTest {
 
         for (final File fileEntry : files) {
             if(fileEntry.getName().endsWith(".md")){
-                new ScriptFormatter(paths.getInputPath(), fileEntry.getName(), paths.getOutputPath(), fileEntry.getName()+".html").output();
+
+                final ScriptFileReader scriptFileReader = new ScriptFileReader(paths.getInputPath(), fileEntry.getName());
+                final ScriptLinesProcessor parser = new ScriptLinesProcessor();
+                scriptFileReader.registerLineByLineProcessor(parser);
+
+                scriptFileReader.read();
+
+                new ScriptTimeEstimator().showEstimates(parser.getScript());
+
+                final ScriptHTMLOutputter outputter = new ScriptHTMLOutputter(paths.getOutputPath(), fileEntry.getName() + ".html");
+
+                if(scriptFileReader.getPath().equalsIgnoreCase(outputter.getPath())){
+                    throw new RuntimeException("Input file same as output file: " + scriptFileReader.getPath());
+                }
+
+                outputter.output(parser.getScript());
+
+                //new ScriptFormatter(paths.getInputPath(), fileEntry.getName(), paths.getOutputPath(), fileEntry.getName()+".html").output();
             }
         }
     }

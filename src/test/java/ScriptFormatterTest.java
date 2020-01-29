@@ -1,7 +1,7 @@
 import com.eviltester.scriptformatter.files.*;
-import com.eviltester.scriptformatter.formats.ScriptHTMLOutputter;
-import com.eviltester.scriptformatter.html.ScriptFormatter;
+import com.eviltester.scriptformatter.formats.ScriptHTMLFileOutputter;
 import com.eviltester.scriptformatter.formats.ScriptTimeEstimator;
+import com.eviltester.scriptformatter.script.ScriptValidator;
 import org.junit.jupiter.api.Test;
 import java.io.*;
 import java.util.Arrays;
@@ -42,17 +42,17 @@ public class ScriptFormatterTest {
 
                 scriptFileReader.read();
 
+                new ScriptValidator().validate(fileEntry.getName(), parser.getScript());
+
                 new ScriptTimeEstimator().showEstimates(parser.getScript());
 
-                final ScriptHTMLOutputter outputter = new ScriptHTMLOutputter(paths.getOutputPath(), fileEntry.getName() + ".html");
+                final ScriptHTMLFileOutputter outputter = new ScriptHTMLFileOutputter(paths.getOutputPath(), fileEntry.getName() + ".html");
 
                 if(scriptFileReader.getPath().equalsIgnoreCase(outputter.getPath())){
                     throw new RuntimeException("Input file same as output file: " + scriptFileReader.getPath());
                 }
 
                 outputter.output(parser.getScript());
-
-                //new ScriptFormatter(paths.getInputPath(), fileEntry.getName(), paths.getOutputPath(), fileEntry.getName()+".html").output();
             }
         }
     }

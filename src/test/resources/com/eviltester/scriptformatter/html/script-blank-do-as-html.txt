@@ -1,0 +1,19 @@
+NOTE:<br>
+<br>
+a Note<br>
+<br>
+---<br>
+
+<style>table, th, td {border: 1px solid black;} td {width: 50%}</style><table>
+
+<tr><td>SAY:<br><br>this say was missing a do<br></td><td><br></td></tr>
+
+<tr><td>SAY:<br><br>this say was also missing a do<br></td><td><br></td></tr>
+
+<tr><td><br></td><td>DO:<br><br>this do has no say<br></td></tr>
+
+<tr><td><br></td><td>DO:<br><br>this do also has no say<br></td></tr>
+
+<tr><td>SAY:<br><br>I am the say for that do<br></td><td>DO:<br><br>this do has a say<br></td></tr>
+
+</table>

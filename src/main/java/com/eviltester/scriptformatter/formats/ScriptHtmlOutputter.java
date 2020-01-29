@@ -3,39 +3,18 @@ package com.eviltester.scriptformatter.formats;
 import com.eviltester.scriptformatter.html.TableWriter;
 import com.eviltester.scriptformatter.script.DoSayScript;
 import com.eviltester.scriptformatter.script.ScriptSection;
+import com.eviltester.scriptformatter.simplewriters.SimpleWriter;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+public class ScriptHtmlOutputter {
+    private final SimpleWriter writer;
 
-public class ScriptHTMLOutputter {
-    private final String outputPath;
-    private final String outputFileName;
-    private File outputFile;
-
-    public ScriptHTMLOutputter(final String outputPath, final String outputFileName) {
-        this.outputPath = outputPath;
-        this.outputFileName = outputFileName;
-        outputFile = new File(outputPath,outputFileName);
+    public ScriptHtmlOutputter(final SimpleWriter writer) {
+        this.writer = writer;
     }
 
-    public String getPath(){
-        return outputFile.getAbsolutePath();
-    }
-
-    //TODO add the script validation into the script object and have a `validate` method
-
-    public void output(final DoSayScript script) throws IOException {
-
-        if(outputFile.exists()){
-            outputFile.delete();
-        }
-
-        new File(outputPath).mkdirs();
-
-        final BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile));
-
+    // TODO: allow multiple note sections and multiple tables
+    // TODO: rethink this - bit clumsy
+    public void output(final DoSayScript script) {
         TableWriter tableWriter = new TableWriter(writer);
         boolean processingTable = false;
 
@@ -58,23 +37,27 @@ public class ScriptHTMLOutputter {
 
             if(section.isDo()){
                 if(nextDo!=null && processingTable){
-                    throw new RuntimeException("DO found without a SAY section " + nextDo.getText());
+                    tableWriter.writeLine(brSeparatedSection(""),
+                            brSeparatedSection(nextDo.getText()));
                 }
                 nextDo = section;
             }
 
             if(section.isSay()){
-                if(nextDo==null){
-                    throw new RuntimeException("Missing DO section for SAY Section " + section.getText());
-                }
+
 
                 if(!processingTable){
                     processingTable=true;
                     tableWriter = new TableWriter(writer);
                 }
 
-                tableWriter.writeLine(brSeparatedSection(section.getText()),
-                        brSeparatedSection(nextDo.getText()));
+                if(nextDo==null){
+                    tableWriter.writeLine(brSeparatedSection(section.getText()),
+                            brSeparatedSection(""));
+                }else {
+                    tableWriter.writeLine(brSeparatedSection(section.getText()),
+                            brSeparatedSection(nextDo.getText()));
+                }
 
                 nextDo=null; // clear the do so we know we have processed this
             }
@@ -84,7 +67,6 @@ public class ScriptHTMLOutputter {
             tableWriter.finish();
         }
 
-        writer.close();
     }
 
     private StringBuilder brSeparatedSection(final String text) {

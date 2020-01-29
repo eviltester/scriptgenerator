@@ -1,0 +1,30 @@
+NOTE:
+
+a Note
+
+---
+
+SAY:
+
+this say was missing a do
+
+SAY:
+
+this say was also missing a do
+
+DO:
+
+this do has no say
+
+DO:
+
+this do also has no say
+
+DO:
+
+this do has a say
+
+SAY:
+
+I am the say for that do
+

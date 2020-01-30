@@ -3,6 +3,7 @@ package com.eviltester.scriptformatter.formats;
 import com.eviltester.scriptformatter.html.TableWriter;
 import com.eviltester.scriptformatter.script.DoSayScript;
 import com.eviltester.scriptformatter.script.ScriptSection;
+import com.eviltester.scriptformatter.simplewriters.Htmlifier;
 import com.eviltester.scriptformatter.simplewriters.SimpleWriter;
 
 public class ScriptHtmlOutputter {
@@ -30,7 +31,7 @@ public class ScriptHtmlOutputter {
 
                 String[]sectionLines = section.getText().split(String.format("%n"));
                 for(String line : sectionLines) {
-                    writer.write(line + "<br>");
+                    writer.write(Htmlifier.encode(line) + "<br>");
                     writer.newLine();
                 }
             }
@@ -74,7 +75,7 @@ public class ScriptHtmlOutputter {
 
         String[]sectionLines = text.split(String.format("%n"));
         for(String line : sectionLines) {
-            brSeparated.append(line + "<br>");
+            brSeparated.append(Htmlifier.encode(line) + "<br>");
         }
 
         return brSeparated;

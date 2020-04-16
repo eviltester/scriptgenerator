@@ -28,32 +28,22 @@ public class ScriptValidator {
 
             if (section.isDo()) {
                 if (!expectingDo) {
-                    errorReports.add(name + " DO found without a SAY section");
-                    if(lastSection==null){
-                        errorReports.add("No Previous Section");
-                    }else{
-                        errorReports.add(lastSection.getText());
-                    }
+                    addError(name + " DO found without a SAY section", lastSection);
                     return false;
                 }
-                lastSection = section;
                 expectingDo=false;
             }
 
             // check last section is a SAY
             if (section.isSay()) {
                 if (expectingDo) {
-                    errorReports.add(name + " SAY section found without a DO Section ");
-                    if(lastSection==null){
-                        errorReports.add("No Previous Section");
-                    }else{
-                        errorReports.add(lastSection.getText());
-                    }
+                    addError(name + " SAY section found without a DO Section ", lastSection);
                     return false;
                 }
-                lastSection = section;
                 expectingDo=true;
             }
+
+            lastSection = section;
         }
 
         // check last section is a SAY
@@ -62,6 +52,15 @@ public class ScriptValidator {
             return false;
         }
         return true;
+    }
+
+    private void addError(final String errorMessage, ScriptSection lastSection) {
+        errorReports.add(errorMessage);
+        if(lastSection==null){
+            errorReports.add("No Previous Section");
+        }else{
+            errorReports.add(lastSection.getText());
+        }
     }
 
     public List<String> getErrorReports() {

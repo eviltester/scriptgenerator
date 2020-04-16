@@ -1,0 +1,25 @@
+NOTE:
+
+a Note
+
+---
+
+DO:
+
+this first do has a say
+
+SAY:
+
+this first say has a do
+
+DO:
+
+this second do has a say
+
+SAY:
+
+say for do two
+
+SAY:
+
+this last say has no  do

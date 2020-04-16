@@ -1,9 +1,16 @@
 package com.eviltester.scriptformatter.script;
 
-public class ScriptValidator {
-    public void validate(final String name, final DoSayScript script) {
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
-        ScriptSection nextDo=null;
+public class ScriptValidator {
+
+    List<String> errorReports = new ArrayList<>();
+
+    public boolean validate(final String name, final DoSayScript script) {
+        ScriptSection lastSection = null;
+        boolean expectingDo=true;
         boolean processingDoSaySection = false;
 
         // TODO: this assumes that DO comes before SAY, we may want to configure this:
@@ -16,27 +23,48 @@ public class ScriptValidator {
         for(ScriptSection section : script.getSections()) {
 
             if (section.isNote()) {
-
-                if(processingDoSaySection){
-                    processingDoSaySection=false;
-                }
+                // notes can be added anywhere, who cares about Notes
             }
 
             if (section.isDo()) {
-                if (nextDo != null && processingDoSaySection) {
-                    throw new RuntimeException(name + " DO found without a SAY section " + nextDo.getText());
+                if (!expectingDo) {
+                    errorReports.add(name + " DO found without a SAY section");
+                    if(lastSection==null){
+                        errorReports.add("No Previous Section");
+                    }else{
+                        errorReports.add(lastSection.getText());
+                    }
+                    return false;
                 }
-                nextDo = section;
+                lastSection = section;
+                expectingDo=false;
             }
 
+            // check last section is a SAY
             if (section.isSay()) {
-                if (nextDo == null) {
-                    throw new RuntimeException(name + " Missing DO section for SAY Section " + section.getText());
+                if (expectingDo) {
+                    errorReports.add(name + " SAY section found without a DO Section ");
+                    if(lastSection==null){
+                        errorReports.add("No Previous Section");
+                    }else{
+                        errorReports.add(lastSection.getText());
+                    }
+                    return false;
                 }
-
-                processingDoSaySection=true;
-                nextDo=null; // finished a row
+                lastSection = section;
+                expectingDo=true;
             }
         }
+
+        // check last section is a SAY
+        if (script.getSections().get(script.getSections().size()-1).isDo()) {
+            errorReports.add("Ended on a DO section, missing a final SAY");
+            return false;
+        }
+        return true;
+    }
+
+    public List<String> getErrorReports() {
+        return errorReports;
     }
 }

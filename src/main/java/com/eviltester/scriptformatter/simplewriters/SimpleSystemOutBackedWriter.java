@@ -2,22 +2,20 @@ package com.eviltester.scriptformatter.simplewriters;
 
 import java.util.List;
 
-public class SimpleStringBackedWriter implements SimpleWriter {
+public class SimpleSystemOutBackedWriter implements SimpleWriter {
 
-    StringBuilder backingString;
+    public SimpleSystemOutBackedWriter(){
 
-    public SimpleStringBackedWriter(){
-        backingString = new StringBuilder();
     }
 
     @Override
     public void newLine() {
-        backingString.append(String.format("%n"));
+        System.out.print(String.format("%n"));
     }
 
     @Override
     public void write(final String someText) {
-        backingString.append(someText);
+        System.out.print(someText);
     }
 
     @Override
@@ -36,7 +34,4 @@ public class SimpleStringBackedWriter implements SimpleWriter {
         return this;
     }
 
-    public String getContents() {
-        return backingString.toString();
-    }
 }

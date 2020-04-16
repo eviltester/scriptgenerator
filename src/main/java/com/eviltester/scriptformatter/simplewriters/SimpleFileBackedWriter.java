@@ -2,6 +2,7 @@ package com.eviltester.scriptformatter.simplewriters;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.List;
 
 public class SimpleFileBackedWriter implements SimpleWriter{
     private final BufferedWriter output;
@@ -35,5 +36,14 @@ public class SimpleFileBackedWriter implements SimpleWriter{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public SimpleWriter writeAll(final List<String> lines) {
+        for(String line : lines){
+            write(line);
+            newLine();
+        }
+        return this;
     }
 }

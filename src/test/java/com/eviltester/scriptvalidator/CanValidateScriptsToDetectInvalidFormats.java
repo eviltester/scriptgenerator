@@ -1,6 +1,5 @@
 package com.eviltester.scriptvalidator;
 
-import com.eviltester.scriptformatter.files.ScriptFileReader;
 import com.eviltester.scriptformatter.files.ScriptLinesProcessor;
 import com.eviltester.scriptformatter.files.ScriptStringReader;
 import com.eviltester.scriptformatter.script.ScriptValidator;
@@ -12,82 +11,58 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class CanValidateScripts {
+public class CanValidateScriptsToDetectInvalidFormats {
 
+    // TODO: assert on error message returned by the validator
     @Test
     public void firstDoMustHaveASay() throws URISyntaxException, IOException {
-
-        String testDataFile = "first-do-missing-say.txt";
-        final ScriptLinesProcessor parser = readAndParseFile(testDataFile);
-
-        final ScriptValidator validator = new ScriptValidator();
-
-        Assertions.assertFalse(validator.validate(testDataFile, parser.getScript()));
-
+        Assertions.assertFalse(
+                thisFileIsValid("first-do-missing-say.txt"));
     }
+
+
 
     @Test
     public void secondDoMustHaveASay() throws URISyntaxException, IOException {
-
-        String testDataFile = "second-do-missing-say.txt";
-        final ScriptLinesProcessor parser = readAndParseFile(testDataFile);
-
-        final ScriptValidator validator = new ScriptValidator();
-
-        Assertions.assertFalse(validator.validate(testDataFile, parser.getScript()));
-
+        Assertions.assertFalse(
+                thisFileIsValid("second-do-missing-say.txt"));
     }
 
     @Test
     public void lastDoMustHaveASay() throws URISyntaxException, IOException {
 
-        String testDataFile = "last-do-missing-say.txt";
-        final ScriptLinesProcessor parser = readAndParseFile(testDataFile);
-
-        final ScriptValidator validator = new ScriptValidator();
-
-        Assertions.assertFalse(validator.validate(testDataFile, parser.getScript()));
-
+        Assertions.assertFalse(
+                thisFileIsValid("last-do-missing-say.txt"));
     }
 
 
 
     @Test
     public void firstSayMustHaveADo() throws URISyntaxException, IOException {
-
-        String testDataFile = "first-say-missing-do.txt";
-        final ScriptLinesProcessor parser = readAndParseFile(testDataFile);
-
-        final ScriptValidator validator = new ScriptValidator();
-
-        Assertions.assertFalse(validator.validate(testDataFile, parser.getScript()));
+        Assertions.assertFalse(
+                thisFileIsValid("first-say-missing-do.txt"));
 
     }
 
     @Test
     public void secondSayMustHaveADo() throws URISyntaxException, IOException {
-
-        String testDataFile = "second-say-missing-do.txt";
-        final ScriptLinesProcessor parser = readAndParseFile(testDataFile);
-
-        final ScriptValidator validator = new ScriptValidator();
-
-        Assertions.assertFalse(validator.validate(testDataFile, parser.getScript()));
-
+        Assertions.assertFalse(
+                thisFileIsValid("second-say-missing-do.txt"));
     }
 
     @Test
     public void lastSayMustHaveADo() throws URISyntaxException, IOException {
+        Assertions.assertFalse(
+                thisFileIsValid("last-say-missing-do.txt"));
+    }
 
-        String testDataFile = "last-say-missing-do.txt";
+    private boolean thisFileIsValid(final String testDataFile) throws IOException, URISyntaxException {
         final ScriptLinesProcessor parser = readAndParseFile(testDataFile);
 
         final ScriptValidator validator = new ScriptValidator();
 
-        Assertions.assertFalse(validator.validate(testDataFile, parser.getScript()));
-
+        return validator.validate(testDataFile, parser.getScript());
     }
-
 
     private ScriptLinesProcessor readAndParseFile(final String testDataFile) throws URISyntaxException, IOException {
         String script = new String(

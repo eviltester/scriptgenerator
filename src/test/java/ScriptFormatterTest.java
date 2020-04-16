@@ -1,14 +1,9 @@
 import com.eviltester.app.ScriptFormatterProcessor;
 import com.eviltester.scriptformatter.files.*;
-import com.eviltester.scriptformatter.formats.ScriptHTMLFileOutputter;
-import com.eviltester.scriptformatter.formats.ScriptTimeEstimator;
-import com.eviltester.scriptformatter.script.ScriptValidator;
-import com.eviltester.scriptformatter.simplewriters.SimpleStringBackedWriter;
 import com.eviltester.scriptformatter.simplewriters.SimpleSystemOutBackedWriter;
 import com.eviltester.scriptformatter.simplewriters.SimpleWriter;
 import org.junit.jupiter.api.Test;
 import java.io.*;
-import java.util.Arrays;
 
 public class ScriptFormatterTest {
 

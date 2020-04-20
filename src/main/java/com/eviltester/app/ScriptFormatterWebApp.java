@@ -33,7 +33,7 @@ public class ScriptFormatterWebApp {
             configFile.configure(paths);
         }
 
-        System.out.println("http://localhost:45567");
+        System.out.println("http://localhost:4567");
         System.out.println("Input: " + paths.getInputPath());
         System.out.println("Output: " + paths.getInputPath());
 

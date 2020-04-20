@@ -5,7 +5,7 @@ import com.eviltester.scriptformatter.script.ScriptSection;
 
 public class ScriptTimeEstimator {
 
-    public void showEstimates(final DoSayScript script) {
+    public TimeEstimate calculateEstimates(final DoSayScript script) {
 
         int sayWordCount=0;
 
@@ -16,17 +16,20 @@ public class ScriptTimeEstimator {
             }
         }
 
-        System.out.println(String.format("words: %d  " + "time: %d  video: %s",
-                                            sayWordCount,
-                                            sayWordCount/100,
-                                            script.getName()));
+        final TimeEstimate estimate = new TimeEstimate().forWords(sayWordCount).forText(script.getName());
+
+//        System.out.println(String.format("words: %d  " + "time: %d  video: %s",
+//                                            sayWordCount,
+//                                            estimate.atWPM(100).getMinutes(),
+//                                            script.getName()));
 
         for(int wordsPerMinute = 100; wordsPerMinute<=150; wordsPerMinute+=10){
-            final int minuteWordCount = sayWordCount / wordsPerMinute;
-            int remainingWordsPerSecond = (int)(((float)(sayWordCount - (minuteWordCount * wordsPerMinute)) / wordsPerMinute)*60) ;
-            System.out.println(String.format("estimated time at: %d words per minute %02d:%02d", wordsPerMinute, minuteWordCount,  remainingWordsPerSecond));
+            TimeEstimate.WordsPerMinute wpm = estimate.atWPM(wordsPerMinute);
+            //System.out.println(wpm.report());
         }
 
-        System.out.println("");
+        //System.out.println("");
+
+        return estimate;
     }
 }

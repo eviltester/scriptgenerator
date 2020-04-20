@@ -1,7 +1,9 @@
 import com.eviltester.app.ScriptFormatterProcessor;
 import com.eviltester.scriptformatter.files.*;
+import com.eviltester.scriptformatter.formats.TimeEstimate;
 import com.eviltester.scriptformatter.simplewriters.SimpleSystemOutBackedWriter;
 import com.eviltester.scriptformatter.simplewriters.SimpleWriter;
+import com.eviltester.scriptformatter.writers.ProcessorTextReport;
 import org.junit.jupiter.api.Test;
 import java.io.*;
 
@@ -30,13 +32,16 @@ public class ScriptFormatterTest {
             configFile.configure(paths);
         }
 
-        // TODO: have a way of processing the reports in batch for output in HTML, JSON etc. to get timing estimates
+        // TODO: get timing estimates in HTML, JSON etc. to get timing estimates
         ScriptFormatterProcessor processor = new ScriptFormatterProcessor(paths);
-        if(!processor.outputAllScripts()){
-            SimpleWriter writer = new SimpleSystemOutBackedWriter();
-            writer.writeAll(processor.getErrorReports());
-            throw new RuntimeException("Error processing Reports");
-        };
+        processor.outputAllScripts();
+
+        SimpleWriter writer = new SimpleSystemOutBackedWriter();
+
+        new ProcessorTextReport(writer).output(processor);
+
+
+
 
     }
 }

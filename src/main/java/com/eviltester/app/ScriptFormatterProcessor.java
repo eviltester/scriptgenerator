@@ -5,6 +5,7 @@ import com.eviltester.scriptformatter.files.ScriptLinesProcessor;
 import com.eviltester.scriptformatter.files.ScriptPaths;
 import com.eviltester.scriptformatter.formats.ScriptHTMLFileOutputter;
 import com.eviltester.scriptformatter.formats.ScriptTimeEstimator;
+import com.eviltester.scriptformatter.formats.TimeEstimate;
 import com.eviltester.scriptformatter.script.ScriptValidator;
 
 import java.io.File;
@@ -16,10 +17,13 @@ import java.util.List;
 public class ScriptFormatterProcessor {
     private final ScriptPaths paths;
     private final ArrayList<String> errorReports;
+    private final ArrayList<TimeEstimate> timeEstimates;
 
     public ScriptFormatterProcessor(final ScriptPaths paths) {
         this.paths = paths;
-        this.errorReports = new ArrayList<String>();
+        this.errorReports = new ArrayList<>();
+        this.timeEstimates = new ArrayList<>();
+
     }
 
     public boolean outputAllScripts(){
@@ -28,6 +32,7 @@ public class ScriptFormatterProcessor {
         Arrays.sort(files);
 
         this.errorReports.clear();
+        this.timeEstimates.clear();
 
         for (final File fileEntry : files) {
 
@@ -53,7 +58,8 @@ public class ScriptFormatterProcessor {
                     continue;
                 }
 
-                new ScriptTimeEstimator().showEstimates(parser.getScript());
+                final TimeEstimate estimates = new ScriptTimeEstimator().calculateEstimates(parser.getScript());
+                timeEstimates.add(estimates);
 
                 final ScriptHTMLFileOutputter outputter = new ScriptHTMLFileOutputter(paths.getOutputPath(), fileEntry.getName() + ".html");
 
@@ -83,5 +89,9 @@ public class ScriptFormatterProcessor {
 
     public List<String> getErrorReports() {
         return errorReports;
+    }
+
+    public ArrayList<TimeEstimate> getTimeEstimates(){
+        return this.timeEstimates;
     }
 }

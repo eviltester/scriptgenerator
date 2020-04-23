@@ -12,6 +12,13 @@ public class ProcessorTextReport {
     }
 
     public void output(final ScriptFormatterProcessor processor) {
+
+        if(processor.getErrorReports().size()>0){
+            writer.newLine();
+            writer.write("**WARNING - errors present see bottom of report**");
+            writer.newLine();
+        }
+
         writer.write("TIME ESTIMATES");
         writer.newLine();
         writer.write("=============");
@@ -28,7 +35,6 @@ public class ProcessorTextReport {
             writer.write("=============");
             writer.newLine();
             writer.writeAll(processor.getErrorReports());
-            throw new RuntimeException("Error processing Reports");
         };
 
     }

@@ -4,6 +4,7 @@ import com.eviltester.scriptformatter.formats.TimeEstimate;
 import com.eviltester.scriptformatter.simplewriters.SimpleSystemOutBackedWriter;
 import com.eviltester.scriptformatter.simplewriters.SimpleWriter;
 import com.eviltester.scriptformatter.writers.ProcessorTextReport;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.io.*;
 
@@ -38,7 +39,10 @@ public class ScriptFormatterTest {
 
         SimpleWriter writer = new SimpleSystemOutBackedWriter();
 
+
         new ProcessorTextReport(writer).output(processor);
+
+        Assertions.assertEquals(0,processor.getErrorReports());
 
 
 

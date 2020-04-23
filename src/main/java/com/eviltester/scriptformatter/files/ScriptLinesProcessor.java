@@ -53,7 +53,7 @@ public class ScriptLinesProcessor implements FileLinesProcessor {
     }
 
     @Override
-    public void startingEvent(String name) {
+    public void startingEvent(String name, final String absolutePath) {
         processingDo=false;
         processingSay=false;
         processingNote = true;
@@ -62,6 +62,7 @@ public class ScriptLinesProcessor implements FileLinesProcessor {
 
         script = new DoSayScript();
         script.named(name);
+        script.atPath(absolutePath);
     }
 
     public DoSayScript getScript() {

@@ -16,7 +16,10 @@ public class ScriptTimeEstimator {
             }
         }
 
-        final TimeEstimate estimate = new TimeEstimate().forWords(sayWordCount).forText(script.getName());
+        final TimeEstimate estimate = new TimeEstimate().
+                                            forWords(sayWordCount).
+                                            forText(script.getName()).
+                                            atPath(script.getPath());
 
 //        System.out.println(String.format("words: %d  " + "time: %d  video: %s",
 //                                            sayWordCount,

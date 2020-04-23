@@ -5,7 +5,11 @@ import com.eviltester.scriptformatter.files.ScriptPaths;
 import com.eviltester.scriptformatter.simplewriters.SimpleStringBackedWriter;
 import com.eviltester.scriptformatter.simplewriters.SimpleSystemOutBackedWriter;
 import com.eviltester.scriptformatter.simplewriters.SimpleWriter;
-import com.eviltester.scriptformatter.writers.ProcessorTextReport;
+import com.eviltester.scriptformatter.writers.ProcessorHtmlReport;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 import static spark.Spark.get;
 
@@ -39,18 +43,78 @@ public class ScriptFormatterWebApp {
 
         get("/", (req, res) -> {
             ScriptFormatterProcessor processor = new ScriptFormatterProcessor(paths);
-            processor.outputAllScripts();
-
-            SimpleWriter writer = new SimpleStringBackedWriter();
-
-            new ProcessorTextReport(writer).output(processor);
+            processor.validateAllScripts();
 
             res.status(200);
-            res.body("<html><head><title>Script Generator</title></head><body><pre>" +
-                    ((SimpleStringBackedWriter)writer).getContents()
-                    +"</pre></body></html>");
+            res.body(getReportFrom(processor));
+
             return res.body();
+
         });
+
+        get("/validate", (req, res) -> {
+            ScriptFormatterProcessor processor = new ScriptFormatterProcessor(paths);
+            processor.validateAllScripts();
+
+            res.status(200);
+            res.body(getReportFrom(processor));
+
+            return res.body();
+
+        });
+
+        get("/generate", (req, res) -> {
+            ScriptFormatterProcessor processor = new ScriptFormatterProcessor(paths);
+            processor.outputAllScripts();
+
+            res.status(200);
+            res.body(getReportFrom(processor));
+
+            return res.body();
+
+        });
+
+        get("/openoutputfile", (req, res) -> {
+            String filename = req.queryParams("file");
+            if(filename==null){
+                filename="";
+            }
+            if(new File(paths.getInputPath(), filename).exists()){
+                File outputFile = new File(paths.getOutputPath(), filename + ".html");
+                if(outputFile.exists()){
+                    // read the file
+                    try
+                    {
+                        res.body(new String ( Files.readAllBytes( outputFile.toPath() ) ));
+                    }
+                    catch (IOException e)
+                    {
+                        res.body(e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            res.status(200);
+            return res.body();
+
+        });
+    }
+
+    private static String getReportFrom(final ScriptFormatterProcessor processor) {
+
+        SimpleWriter writer = new SimpleStringBackedWriter();
+
+        new ProcessorHtmlReport(writer).output(processor);
+
+
+        return "<html><head><title>Script Generator</title></head><body>" +
+                "<div class='actionbuttons'>"+
+                "<form><button formaction='/validate'>Validate Only</button></form>"+
+                "<form><button formaction='/generate'>Validate And Generate</button></form>"+
+                ((SimpleStringBackedWriter)writer).getContents() +
+                "</body></html>";
+
     }
 
 

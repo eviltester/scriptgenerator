@@ -5,5 +5,5 @@ public interface FileLinesProcessor {
 
     void lineEvent(String line);
 
-    void startingEvent(String name);
+    void startingEvent(String name, final String absolutePath);
 }

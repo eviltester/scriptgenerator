@@ -7,6 +7,7 @@ public class TimeEstimate {
     private int wordCount;
     private String textName;
     List<WordsPerMinute> estimates= new ArrayList<>();
+    private String path;
 
     public TimeEstimate forWords(final int wordCount) {
         this.wordCount = wordCount;
@@ -31,6 +32,19 @@ public class TimeEstimate {
             sb.append(String.format("%s%n", estimate.report()));
         }
         return sb.toString();
+    }
+
+    public String getText() {
+        return textName;
+    }
+
+    public TimeEstimate atPath(final String path) {
+        this.path = path;
+        return this;
+    }
+
+    public String getPath() {
+        return path;
     }
 
     public class WordsPerMinute {

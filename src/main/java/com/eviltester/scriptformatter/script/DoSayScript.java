@@ -7,6 +7,7 @@ public class DoSayScript {
 
     private List<ScriptSection> scriptSections;
     private String name;
+    private String path;
 
     public DoSayScript(){
         this.scriptSections = new ArrayList();
@@ -34,5 +35,13 @@ public class DoSayScript {
 
     public String getName() {
         return this.name;
+    }
+
+    public void atPath(final String absolutePath) {
+        this.path = absolutePath;
+    }
+
+    public String getPath(){
+        return this.path;
     }
 }

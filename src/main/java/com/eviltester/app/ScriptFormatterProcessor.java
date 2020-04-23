@@ -27,6 +27,15 @@ public class ScriptFormatterProcessor {
     }
 
     public boolean outputAllScripts(){
+        return process(true);
+    }
+
+    public boolean validateAllScripts(){
+        return process(false);
+    }
+
+
+    public boolean process(boolean output){
         File inputFolder = new File(paths.getInputPath());
         File[] files = inputFolder.listFiles();
         Arrays.sort(files);
@@ -61,23 +70,24 @@ public class ScriptFormatterProcessor {
                 final TimeEstimate estimates = new ScriptTimeEstimator().calculateEstimates(parser.getScript());
                 timeEstimates.add(estimates);
 
-                final ScriptHTMLFileOutputter outputter = new ScriptHTMLFileOutputter(paths.getOutputPath(), fileEntry.getName() + ".html");
+                    if(output) {
+                        final ScriptHTMLFileOutputter outputter = new ScriptHTMLFileOutputter(paths.getOutputPath(), fileEntry.getName() + ".html");
 
-                if (scriptFileReader.getPath().equalsIgnoreCase(outputter.getPath())) {
+                        if (scriptFileReader.getPath().equalsIgnoreCase(outputter.getPath())) {
 
-                    errorReports.add("Input file same as output file: " + scriptFileReader.getPath());
-                    continue;
+                            errorReports.add("Input file same as output file: " + scriptFileReader.getPath());
+                            continue;
+                        }
+
+                        try {
+                            outputter.output(parser.getScript());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            errorReports.add("Error Writing " + outputter.getPath() + " - " + e.getMessage());
+                            continue;
+                        }
+                    }
                 }
-
-                try {
-                    outputter.output(parser.getScript());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    errorReports.add("Error Writing " + outputter.getPath() + " - " + e.getMessage());
-                    continue;
-                }
-
-            }
         }
 
         if(errorReports.size()>0){

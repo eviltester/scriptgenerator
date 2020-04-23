@@ -65,7 +65,7 @@ public class ScriptFileReader {
 
     private void letProcessorsKnowWeAreStarting(final String inputFileName) {
         for(ScriptLinesProcessor processor : lineProcessors){
-            processor.startingEvent(inputFileName);
+            processor.startingEvent(inputFileName, inputFile.getAbsolutePath());
         }
     }
 

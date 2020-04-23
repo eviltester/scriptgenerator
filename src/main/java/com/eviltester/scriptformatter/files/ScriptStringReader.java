@@ -19,7 +19,7 @@ public class ScriptStringReader {
 
     public void read() {
 
-        letProcessorsKnowWeAreStarting("string script");
+        letProcessorsKnowWeAreStarting("string script", "no path");
 
         String[] lines = scriptContents.split(String.format("%n"));
         for(String line : lines){
@@ -41,9 +41,9 @@ public class ScriptStringReader {
         }
     }
 
-    private void letProcessorsKnowWeAreStarting(final String inputFileName) {
+    private void letProcessorsKnowWeAreStarting(final String inputFileName, final String inputPath) {
         for(ScriptLinesProcessor processor : lineProcessors){
-            processor.startingEvent(inputFileName);
+            processor.startingEvent(inputFileName, inputPath);
         }
     }
 }

@@ -35,7 +35,7 @@ public class ScriptFormatterWebApp {
 
         System.out.println("http://localhost:4567");
         System.out.println("Input: " + paths.getInputPath());
-        System.out.println("Output: " + paths.getInputPath());
+        System.out.println("Output: " + paths.getOutputPath());
 
         get("/", (req, res) -> {
             ScriptFormatterProcessor processor = new ScriptFormatterProcessor(paths);

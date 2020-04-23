@@ -5,11 +5,13 @@ import com.eviltester.scriptformatter.simplewriters.SimpleSystemOutBackedWriter;
 import com.eviltester.scriptformatter.simplewriters.SimpleWriter;
 import com.eviltester.scriptformatter.writers.ProcessorTextReport;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import java.io.*;
 
 public class ScriptFormatterTest {
 
+    @Disabled("This is not a build test, this is an adhoc GUI for running the app")
     @Test
     public void givenAScriptFolderCreateAHTMLFiles() throws IOException {
 
